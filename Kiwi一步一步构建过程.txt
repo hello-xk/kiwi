@@ -1,0 +1,41 @@
+Kiwi一步一步构建过程：
+
+1，使用Qt的qmake生成vs项目：
+	1，据说，如果环境变量中的qmakespec是win32-msvc2010，则生成vs2010的工程，如果是win32-msvc2008，则生成vs2008的工程。（目前没发现
+	2，qmake生成vs工程的用法有两种：
+		1，单工程：qmake -tp vc XXX.pro [-spec win32-msvc2008]
+		
+		单工程：只描述工程自己。
+			XXX.pro -> 一个解决方案，一个项目
+			
+		例：
+		vc.pro:	
+			QT       += core gui
+			greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+			TARGET = vc
+			TEMPLATE = app
+			SOURCES += main.cpp\
+					mainwindow.cpp
+			HEADERS  += mainwindow.h
+			FORMS    += mainwindow.ui
+
+		
+		2，多工程：qmake -tp vc XXX.pro -r [-spec win32-msvc2008]   //多了一个递归
+		
+		多工程：描述的是子工程。
+			XXX.pro	-> 一个解决方案，多个项目
+			- test/test.pro
+			- framework/framework.pro
+			- XXXX/XXXX.pro
+		例：
+		all.pro:
+			TEMPLATE = subdirs	//指定为subdirs
+			TARGET = 
+			DEPENDPATH += .
+			INCLUDEPATH += .
+
+			SUBDIRS = vc \		//此解决方案包含了vc目录下的vc.pro
+				      test  	//此解决方案包含了test目录下的test.pro
+
+	3，使用qt的pro管理项目文件，然后生成vs工程，最后在vs IDE上开发。
