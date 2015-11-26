@@ -39,3 +39,34 @@ Kiwi一步一步构建过程：
 				      test  	//此解决方案包含了test目录下的test.pro
 
 	3，使用qt的pro管理项目文件，然后生成vs工程，最后在vs IDE上开发。
+
+	
+2，使用Qt进行国际化：
+	主要有三个工具：
+	lupdate		通过pro文件生成ts翻译文件
+	lrelease	将ts翻译文件生成pm文件
+	linguist	翻译工具，用来编辑ts的翻译内容
+	
+	lupdate运行的时候，总出现下面的问题，但有时并不影响ts文件的生成（可能成功可能失败）。
+	C:/Qt/4.7.1/mkspecs/features/default_post.prf(5):Function 'system' is not implemented
+	C:/Qt/4.7.1/mkspecs/features/debug_and_release.prf(66):Function 'eval' is not implemented
+	C:/Qt/4.7.1/mkspecs/features/debug_and_release.prf(69):Function 'eval' is not implemented
+	C:/Qt/4.7.1/mkspecs/features/debug_and_release.prf(72):Function 'eval' is not implemented
+	C:/Qt/4.7.1/mkspecs/features/debug_and_release.prf(75):Function 'eval' is not implemented
+	C:/Qt/4.7.1/mkspecs/features/debug_and_release.prf(78):Function 'eval' is not implemented
+	C:/Qt/4.7.1/mkspecs/features/debug_and_release.prf(80):Function 'eval' is not implemented
+	C:/Qt/4.7.1/mkspecs/features/debug_and_release.prf(82):Function 'eval' is not implemented
+	C:/Qt/4.7.1/mkspecs/features/debug_and_release.prf(84):Function 'eval' is not implemented
+	
+	由于lupdate总是假设源代码里的翻译字段的编码为某一编码，所以最好使用英文，否则产生的ts文件里的翻译字段可能是乱码。
+	
+	在XXX.pro文件的最后面，添加
+	TRANSLATIONS += ../../../i18n/en-US/ui.ts
+	TRANSLATIONS += ../../../i18n/pt-BR/ui.ts
+	TRANSLATIONS += ../../../i18n/zh-CN/ui.ts
+	TRANSLATIONS += ../../../i18n/zh-TW/ui.ts
+	
+	然后命令行运行：lupdate XXX.pro 即可生成对应的ts文件
+	
+	
+	
