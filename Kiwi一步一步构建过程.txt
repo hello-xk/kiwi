@@ -30,7 +30,7 @@ Kiwi一步一步构建过程：
 			- XXXX/XXXX.pro
 		例：
 		all.pro:
-			TEMPLATE = subdirs	//指定为subdirs
+			TEMPLATE = subdirs	//指定为subdirs，必须小写！
 			TARGET = 
 			DEPENDPATH += .
 			INCLUDEPATH += .

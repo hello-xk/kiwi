@@ -1,0 +1,1 @@
+qmake -tp vc kiwi.pro -r -spec win32-msvc2008
