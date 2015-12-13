@@ -1,6 +1,6 @@
 #pragma once
 
-//æ≤Ã¨±‡“Î
+//build directly
 #ifdef BUILD_KI_FRAMEWORK_STATIC_BUILD
 #    define KI_CMD_EXPORT
 #    define KI_CORE_EXPORT
@@ -12,7 +12,7 @@
 #    define KI_NETWORK_EXPORT
 #    define KI_APP_EXPORT
 #else
-//∂ØÃ¨±‡“Î
+//build dll
 #  ifdef BUILD_KI_CMD
 #    define KI_CMD_EXPORT __declspec( dllexport )
 #  else
