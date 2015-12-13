@@ -4,3 +4,11 @@
 
 1.a hello kiwi program for saying hello
 2.
+
+
+
+//Current Schedule
+1.fix the build environment for the vcproj file
+2.build a kicmd.dll for test
+3.finish the kicmd.dll v0.01
+4.build a console test app for the kicmd.dll
