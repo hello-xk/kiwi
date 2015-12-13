@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9,00"
+	Name="kicmd"
+	ProjectGUID="{48CA24A2-374F-368C-BE84-09677080BA1D}"
+	Keyword="Qt4VSv1.0">
+	<Platforms>
+		<Platform
+			Name="Win32" />
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="release\debug\"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			ConfigurationType="2"
+			IntermediateDirectory=".\"
+			UseOfMfc="0">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;tmp&quot;,&quot;D:\Qt\Qt5.4.0\5.4\msvc2010_opengl\include&quot;,&quot;D:\Qt\Qt5.4.0\5.4\msvc2010_opengl\include\QtCore&quot;,&quot;tmp&quot;,D:\Qt\Qt5.4.0\5.4\msvc2010_opengl\mkspecs\win32-msvc2008"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
+				AssemblerListingLocation=".\"
+				DebugInformationFormat="0"
+				ExceptionHandling="1"
+				GeneratePreprocessedFile="0"
+				ObjectFile=".\"
+				Optimization ="2"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DEBUG,QT_NO_DEBUG,QT_CORE_LIB,NDEBUG"
+				ProgramDataBaseFileName=""
+				RuntimeLibrary="2"
+				RuntimeTypeInfo="true"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="true"
+				WarningLevel="3" />
+			<Tool
+				Name="VCCustomBuildTool" />
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="./lib D:\Qt\Qt5.4.0\5.4\msvc2010_opengl\lib\Qt5Core.lib"
+				AdditionalLibraryDirectories=",D:\Qt\Qt5.4.0\5.4\msvc2010_opengl\lib"
+				DataExecutionPrevention="true"
+				GenerateDebugInformation="false"
+				IgnoreImportLibrary="true"
+				LinkIncremental="1"
+				LinkTimeCodeGeneration="0"
+				OutputFile="$(OutDir)\kicmd.dll"
+				ProgramDatabaseFile=""
+				RandomizedBaseAddress="true"
+				SubSystem="2"
+				SuppressStartupBanner="true" />
+			<Tool
+				Name="VCManifestTool" />
+			<Tool
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0" />
+			<Tool
+				Name="VCPostBuildEventTool" />
+			<Tool
+				Name="VCPreBuildEventTool" />
+			<Tool
+				Name="VCPreLinkEventTool" />
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DEBUG,QT_NO_DEBUG,QT_CORE_LIB" />
+		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="debug\debug\"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			ConfigurationType="2"
+			IntermediateDirectory=".\"
+			UseOfMfc="0">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;.&quot;,&quot;tmp&quot;,&quot;D:\Qt\Qt5.4.0\5.4\msvc2010_opengl\include&quot;,&quot;D:\Qt\Qt5.4.0\5.4\msvc2010_opengl\include\QtCore&quot;,&quot;tmp&quot;,D:\Qt\Qt5.4.0\5.4\msvc2010_opengl\mkspecs\win32-msvc2008"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
+				AssemblerListingLocation=".\"
+				DebugInformationFormat="3"
+				ExceptionHandling="1"
+				GeneratePreprocessedFile="0"
+				ObjectFile=".\"
+				Optimization ="4"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DEBUG,QT_CORE_LIB"
+				ProgramDataBaseFileName=""
+				RuntimeLibrary="3"
+				RuntimeTypeInfo="true"
+				SuppressStartupBanner="true"
+				TreatWChar_tAsBuiltInType="true"
+				WarningLevel="3" />
+			<Tool
+				Name="VCCustomBuildTool" />
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="./lib D:\Qt\Qt5.4.0\5.4\msvc2010_opengl\lib\Qt5Cored.lib"
+				AdditionalLibraryDirectories=",D:\Qt\Qt5.4.0\5.4\msvc2010_opengl\lib"
+				DataExecutionPrevention="true"
+				GenerateDebugInformation="true"
+				IgnoreImportLibrary="true"
+				LinkTimeCodeGeneration="0"
+				OutputFile="$(OutDir)\kicmd.dll"
+				ProgramDatabaseFile=""
+				RandomizedBaseAddress="true"
+				SubSystem="2"
+				SuppressStartupBanner="true" />
+			<Tool
+				Name="VCManifestTool" />
+			<Tool
+				Name="VCMIDLTool"
+				DefaultCharType="0"
+				EnableErrorChecks="1"
+				WarningLevel="0" />
+			<Tool
+				Name="VCPostBuildEventTool" />
+			<Tool
+				Name="VCPreBuildEventTool" />
+			<Tool
+				Name="VCPreLinkEventTool" />
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,DEBUG,QT_CORE_LIB,_DEBUG" />
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File
+				RelativePath="dir.cpp" />
+			<File
+				RelativePath="main.cpp" />
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="dir.h" />
+			<File
+				RelativePath="stable.h" />
+		</Filter>
+		<Filter
+			Name="Generated Files"
+			Filter="cpp;c;cxx;moc;h;def;odl;idl;res;"
+			UniqueIdentifier="{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}">
+			<File
+				RelativePath="tmp\qrc_kicmd.cpp" />
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="qrc;*"
+			UniqueIdentifier="{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}"
+			ParseFiles="false">
+			<File
+				RelativePath="kicmd.qrc">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="kicmd.qrc"
+						CommandLine="setlocal&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;D:\Qt\Qt5.4.0\5.4\msvc2010_opengl\bin\rcc.exe -name kicmd kicmd.qrc -o tmp\qrc_kicmd.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;endlocal"
+						Description="RCC kicmd.qrc"
+						Outputs="tmp\qrc_kicmd.cpp"
+						Path="D:\Qt\Qt5.4.0\5.4\msvc2010_opengl\bin" />
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						AdditionalDependencies="kicmd.qrc"
+						CommandLine="setlocal&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;D:\Qt\Qt5.4.0\5.4\msvc2010_opengl\bin\rcc.exe -name kicmd kicmd.qrc -o tmp\qrc_kicmd.cpp&#x000D;&#x000A;if errorlevel 1 goto VCReportError&#x000D;&#x000A;endlocal"
+						Description="RCC kicmd.qrc"
+						Outputs="tmp\qrc_kicmd.cpp"
+						Path="D:\Qt\Qt5.4.0\5.4\msvc2010_opengl\bin" />
+				</FileConfiguration>
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>
