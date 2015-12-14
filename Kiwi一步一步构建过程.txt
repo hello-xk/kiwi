@@ -68,5 +68,36 @@ Kiwi一步一步构建过程：
 	
 	然后命令行运行：lupdate XXX.pro 即可生成对应的ts文件
 	
+3，VS的编译+链接选项：
+	从VS2008复制出来的编译命令行：
+	/I "c:\Qt\4.7.1\include\QtCore" /I "c:\Qt\4.7.1\include" /I "." /I "tmp" /I "c:\Qt\4.7.1\include\ActiveQt" /I "c:\Qt\4.7.1\mkspecs\win32-msvc2008" /D "UNICODE" /D "WIN32" /D "QT_LARGEFILE_SUPPORT" /D "QT_DLL" /D "QT_CORE_LIB" /D "QT_HAVE_MMX" /D "QT_HAVE_3DNOW" /D "QT_HAVE_SSE" /D "QT_HAVE_MMXEXT" /D "QT_HAVE_SSE2" /D "QT_THREAD_SUPPORT" /FD /EHsc /MDd /GS- /Zc:wchar_t- /Fo"tmp\\" /Fd".\\" /W3 /nologo /c /Zi /TP /errorReport:prompt
+	
+	其中： ## 参考https://msdn.microsoft.com/zh-cn/library/9wst99a9.aspx 或 https://msdn.microsoft.com/zh-cn/library/fwkeyyhe.aspx
+	/I 	## 头文件目录
+	/D 	## 预定义变量
+	/Fo ## 指定obj的目录
+	/Fd ## 指定pdb的目录
+	/Zc ## 一致性（都是用Unicode
+	
+	从VS2008复制出来的链接命令行：
+	/OUT:"..\bin\hellokiwi.exe" /NOLOGO /LIBPATH:"c:\Qt\4.7.1\lib" /MANIFEST /MANIFESTFILE:"tmp\\hellokiwi.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /SUBSYSTEM:CONSOLE /DYNAMICBASE /NXCOMPAT /ERRORREPORT:PROMPT c:\Qt\4.7.1\lib\QtCored4.lib  kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib
+	
+	其中：
+	/DEBUG	## debug版本
+	/LIBPATH	##lib目录
+	
+4，QT pro文件详解
+	参考http://doc.qt.io/qt-4.8/qmake-variable-reference.html
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
