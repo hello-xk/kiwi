@@ -107,51 +107,51 @@ void initialiseConsole(){
 
 }
 
-void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg){
-    if((console->con_screenbuf != INVALID_HANDLE_VALUE)){
-
-        switch (type) {
-
-        case QtDebugMsg:
-            console->localMsg = console->errorMessage + "Debug: " + msg;
-            WriteConsoleW(console->con_screenbuf, console->localMsg.toStdWString().data(), console->localMsg.toStdWString().length(), NULL, NULL );
-            WriteConsoleA(console->con_screenbuf, "\n--\n", 4, NULL, NULL );
-            break;
-
-        case QtWarningMsg:
-            console->localMsg = console->errorMessage + "Warning: " + msg;
-            WriteConsoleW(console->con_screenbuf, console->localMsg.toStdWString().data(), console->localMsg.toStdWString().length() , NULL, NULL );
-            WriteConsoleA(console->con_screenbuf, "\n--\n", 4, NULL, NULL );
-            break;
-
-        case QtCriticalMsg:
-            console->localMsg = console->errorMessage + "Critical: " + msg;
-            WriteConsoleW(console->con_screenbuf, console->localMsg.toStdWString().data(), console->localMsg.toStdWString().length(), NULL, NULL );
-            WriteConsoleA(console->con_screenbuf, "\n--\n", 4, NULL, NULL );
-            break;
-
-        case QtFatalMsg:
-            console->localMsg = console->errorMessage + "Fatal: " + msg;
-            WriteConsoleW(console->con_screenbuf, console->localMsg.toStdWString().data(), console->localMsg.toStdWString().length(), NULL, NULL );
-            WriteConsoleA(console->con_screenbuf, "\n--\n", 4, NULL, NULL );
-            abort();
-        }
-    }
-}
-
-
-
+//void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg){
+//    if((console->con_screenbuf != INVALID_HANDLE_VALUE)){
+//
+//        switch (type) {
+//
+//        case QtDebugMsg:
+//            console->localMsg = console->errorMessage + "Debug: " + msg;
+//            WriteConsoleW(console->con_screenbuf, console->localMsg.toStdWString().data(), console->localMsg.toStdWString().length(), NULL, NULL );
+//            WriteConsoleA(console->con_screenbuf, "\n--\n", 4, NULL, NULL );
+//            break;
+//
+//        case QtWarningMsg:
+//            console->localMsg = console->errorMessage + "Warning: " + msg;
+//            WriteConsoleW(console->con_screenbuf, console->localMsg.toStdWString().data(), console->localMsg.toStdWString().length() , NULL, NULL );
+//            WriteConsoleA(console->con_screenbuf, "\n--\n", 4, NULL, NULL );
+//            break;
+//
+//        case QtCriticalMsg:
+//            console->localMsg = console->errorMessage + "Critical: " + msg;
+//            WriteConsoleW(console->con_screenbuf, console->localMsg.toStdWString().data(), console->localMsg.toStdWString().length(), NULL, NULL );
+//            WriteConsoleA(console->con_screenbuf, "\n--\n", 4, NULL, NULL );
+//            break;
+//
+//        case QtFatalMsg:
+//            console->localMsg = console->errorMessage + "Fatal: " + msg;
+//            WriteConsoleW(console->con_screenbuf, console->localMsg.toStdWString().data(), console->localMsg.toStdWString().length(), NULL, NULL );
+//            WriteConsoleA(console->con_screenbuf, "\n--\n", 4, NULL, NULL );
+//            abort();
+//        }
+//    }
+//}
+//
+//
+//
 int main(int argc, char *argv[])
 {
 
-    qInstallMsgHandler(messageHandler);
+    //qInstallMsgHandler(messageHandler);
 
     QCoreApplication a(argc, argv);
 
     console = new consoleT();
     initialiseConsole();
 
-    qDebug() << "Hello World!";
+    //qDebug() << "Hello World!";
 
     //MainWindow w;
     //w.show();

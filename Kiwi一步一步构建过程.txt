@@ -86,6 +86,71 @@ Kiwi一步一步构建过程：
 	/DEBUG	## debug版本
 	/LIBPATH	##lib目录
 	
+	//////////////
+	这些命令行是这样执行的：参考编译日志BuildLog.htm
+	命令行      
+	正在创建临时文件“C:\Users\ADMINI~1\AppData\Local\Temp\RSP00000C120246972.rsp”，其内容为
+	[
+	/I "c:\Qt\4.7.1\include\QtCore" /I "c:\Qt\4.7.1\include" /I "." /I "tmp" /I "c:\Qt\4.7.1\include\ActiveQt" /I "c:\Qt\4.7.1\mkspecs\win32-msvc2008" /D "UNICODE" /D "WIN32" /D "QT_LARGEFILE_SUPPORT" /D "QT_DLL" /D "QT_CORE_LIB" /D "QT_HAVE_MMX" /D "QT_HAVE_3DNOW" /D "QT_HAVE_SSE" /D "QT_HAVE_MMXEXT" /D "QT_HAVE_SSE2" /D "QT_THREAD_SUPPORT" /FD /EHsc /MDd /GS- /Zc:wchar_t- /Fo"tmp\\" /Fd".\\" /W3 /c /Zi /TP  -Zm200 -w34100 -w34189
+
+	.\main.cpp
+	]
+	正在创建命令行“cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP00000C120246972.rsp /nologo /errorReport:prompt”
+	正在创建临时文件“C:\Users\ADMINI~1\AppData\Local\Temp\RSP00000D120246972.rsp”，其内容为
+	[
+	/OUT:"..\bin\hellokiwi.exe" /LIBPATH:"c:\Qt\4.7.1\lib" /MANIFEST /MANIFESTFILE:"tmp\\hellokiwi.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /SUBSYSTEM:CONSOLE /DYNAMICBASE /NXCOMPAT c:\Qt\4.7.1\lib\QtCored4.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib
+
+	".\tmp\main.obj"
+	]
+	正在创建命令行“link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP00000D120246972.rsp /NOLOGO /ERRORREPORT:PROMPT”
+	正在创建临时文件“C:\Users\ADMINI~1\AppData\Local\Temp\RSP00000E120246972.rsp”，其内容为
+	[
+	/outputresource:"..\bin\hellokiwi.exe;#1" /manifest
+
+	.\tmp\hellokiwi.exe.intermediate.manifest
+	]
+	正在创建命令行“mt.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP00000E120246972.rsp /nologo”
+	正在创建临时文件“C:\Users\ADMINI~1\AppData\Local\Temp\BAT00000F120246972.bat”，其内容为
+	[
+	@echo 清单资源上次更新时间为 %TIME%，更新位置为 %DATE% > .\tmp\mt.dep
+	]
+	正在创建命令行“C:\Users\ADMINI~1\AppData\Local\Temp\BAT00000F120246972.bat”
+
+	可见：执行过程是cl.exe -> link.exe -> mt.exe -> *.bat
+	/////////////
+	
+	msbuild.exe/cl.exe/link.exe/nmake.exe/devenv.exe/ml.exe/rc.exe/mt.exe/lib.exe
+	可参考http://blog.csdn.net/xiexievv/article/details/45775005
+	
+	msbuild.exe：比较强大，基本是命令行下的VS，可以在命令行下执行VS相关的操作，比如clean、build、rebuild、配置项目属性等。
+	参考https://msdn.microsoft.com/zh-cn/library/dd293607.aspx
+	1，配置VS项目；## /p:config=value 通过使用属性命令行选项 (/p)，您可以在项目生成文件中重写属性。
+		msbuild myproject.vcxproj /p:configuration=debug /p:platform=win32 ##重写myproject.vcxproj项目文件里面的configuration和platform属性
+	2，生成VS项目：## /t:cmd
+		msbuild myproject.vcxproj /p:configuration=debug ##编译构建myproject.vcxproj的DEBUG版本。
+		msbuild myproject.vcxproj /t:rebuild
+		myproject ##生成后，调用程序
+		
+	devenv.exe：VS的界面运行程序devenv.exe，也可以在命令行设置参数运行devenv.com。后者可用来设置集成开发环境 (IDE) 的各个选项，以及从命令行生成、调试和部署项目。【对于与编译构建相关的任务，现在推荐使用 MSBuild，而非 devenv】
+		一些例子：##更多参考https://msdn.microsoft.com/zh-cn/library/xee0c8y7.aspx 或直接devenv /?
+		devenv myproj.csproj /build /out log.txt ##生成时指定一个文件接收错误。
+		devenv myproj.csproj /clean ##清理项目
+		devenv myproj.csproj /build ##编译构建
+		devenv myproj.csproj /build Debug ##编译构建Debug版本
+
+	cl.exe：VS的编译工具，无论是使用IDE，还是命令行MSBuild，最终编译*.cpp文件的还是cl.exe【将.c，.cpp，.cxx编译成obj文件】
+	link.exe：VS的链接工具，同上，无论是使用IDE，还是命令行MSBuild，最终都是调用link.exe来链接.obj和.lib等文件来生成目标。【将obj、lib、res链接成dll或exe等可执行文件】
+	nmake.exe：Windows下的make工具，解析makefile来自动编译构建项目。仍旧需要使用cl.exe编译器（或其它编译器）和link.exe链接器(或其它链接器)。【执行makefile构建dll或exe等目标】
+	ml.exe：汇编的编译工具，MASM编译工具。64位为ml64.exe。masm and link。【将.asm编译生成.obj文件，貌似可以直接生成exe可执行文件】
+		
+	rc.exe：Windows资源编译器工具，将例如游标、图标、位图、对话框和字体的资源编译为一个资源 (.res) 文件。【将.rc资源文本转变成.res二进制文件】
+	lib.exe：具体不太清楚，貌似是用于提取dll的def文件。参考https://msdn.microsoft.com/zh-cn/library/0xb6w1f8.aspx
+	mt.exe：清单文件生成工具。项目>属性>链接器>清单文件>生成清单>是/否。生成一个*.manifest清单文件和mt.dep生成清单的日期文件。
+
+	【清单：https://msdn.microsoft.com/zh-cn/library/ms235605.aspx
+	在命令行中使用 nmake 或类似工具生成 C/C++ 应用程序时，将在链接器处理完所有对象文件并生成最终二进制文件后生成清单。链接器收集存储在对象文件中的程序集信息，并将此信息合并到最终清单文件中。默认情况下，链接器将生成一个名为<binary_name>.<extension>.manifest 的文件，用于描述最终二进制文件。链接器不会将清单文件嵌入此二进制文件中，只能将清单生成为外部文件。有几种方法可将清单嵌入最终二进制文件中，如使用清单工具 (mt.exe) 或将清单编译为资源文件。切记：将清单嵌入最终二进制文件中时，必须遵守特定的规则，这样才能启用诸如增量链接、签名、编辑并继续等功能。 如何：将清单嵌入到 C/C++ 应用程序 中讨论了在命令行生成清单时使用的这些功能及其他选项。】
+
+	
 4，QT pro文件详解
 	参考http://doc.qt.io/qt-4.8/qmake-variable-reference.html
 
