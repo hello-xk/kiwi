@@ -130,7 +130,7 @@ Kiwi一步一步构建过程：
 		msbuild myproject.vcxproj /p:configuration=debug ##编译构建myproject.vcxproj的DEBUG版本。
 		msbuild myproject.vcxproj /t:rebuild
 		myproject ##生成后，调用程序
-	缺点：依赖于.Net Framework 4.5.1以上。安装庞大。
+	缺点：依赖于.Net Framework 4.5.1以上，安装庞大；且只支持vcxproj而不支持vs2008的vcproj，后者需要转换。
 		
 	devenv.exe：VS的界面运行程序devenv.exe，也可以在命令行设置参数运行devenv.com。后者可用来设置集成开发环境 (IDE) 的各个选项，以及从命令行生成、调试和部署项目。【对于与编译构建相关的任务，现在推荐使用 MSBuild，而非 devenv】
 		一些例子：##更多参考https://msdn.microsoft.com/zh-cn/library/xee0c8y7.aspx 或直接devenv /?
