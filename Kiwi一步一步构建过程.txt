@@ -120,16 +120,17 @@ Kiwi一步一步构建过程：
 	/////////////
 	
 	msbuild.exe/cl.exe/link.exe/nmake.exe/devenv.exe/ml.exe/rc.exe/mt.exe/lib.exe
-	可参考http://blog.csdn.net/xiexievv/article/details/45775005
+	//这个帖子总结得不错，可参考http://blog.csdn.net/xiexievv/article/details/45775005
 	
-	msbuild.exe：比较强大，基本是命令行下的VS，可以在命令行下执行VS相关的操作，比如clean、build、rebuild、配置项目属性等。
-	参考https://msdn.microsoft.com/zh-cn/library/dd293607.aspx
+	msbuild.exe：比较强大，基本是命令行下的VS，可以在命令行下执行VS相关的操作，比如clean、build、rebuild、配置项目属性等。	
+	参考https://msdn.microsoft.com/zh-cn/library/dd293607.aspx和github：https://github.com/Microsoft/msbuild
 	1，配置VS项目；## /p:config=value 通过使用属性命令行选项 (/p)，您可以在项目生成文件中重写属性。
 		msbuild myproject.vcxproj /p:configuration=debug /p:platform=win32 ##重写myproject.vcxproj项目文件里面的configuration和platform属性
 	2，生成VS项目：## /t:cmd
 		msbuild myproject.vcxproj /p:configuration=debug ##编译构建myproject.vcxproj的DEBUG版本。
 		msbuild myproject.vcxproj /t:rebuild
 		myproject ##生成后，调用程序
+	缺点：依赖于.Net Framework 4.5.1以上。安装庞大。
 		
 	devenv.exe：VS的界面运行程序devenv.exe，也可以在命令行设置参数运行devenv.com。后者可用来设置集成开发环境 (IDE) 的各个选项，以及从命令行生成、调试和部署项目。【对于与编译构建相关的任务，现在推荐使用 MSBuild，而非 devenv】
 		一些例子：##更多参考https://msdn.microsoft.com/zh-cn/library/xee0c8y7.aspx 或直接devenv /?
@@ -150,12 +151,46 @@ Kiwi一步一步构建过程：
 	【清单：https://msdn.microsoft.com/zh-cn/library/ms235605.aspx
 	在命令行中使用 nmake 或类似工具生成 C/C++ 应用程序时，将在链接器处理完所有对象文件并生成最终二进制文件后生成清单。链接器收集存储在对象文件中的程序集信息，并将此信息合并到最终清单文件中。默认情况下，链接器将生成一个名为<binary_name>.<extension>.manifest 的文件，用于描述最终二进制文件。链接器不会将清单文件嵌入此二进制文件中，只能将清单生成为外部文件。有几种方法可将清单嵌入最终二进制文件中，如使用清单工具 (mt.exe) 或将清单编译为资源文件。切记：将清单嵌入最终二进制文件中时，必须遵守特定的规则，这样才能启用诸如增量链接、签名、编辑并继续等功能。 如何：将清单嵌入到 C/C++ 应用程序 中讨论了在命令行生成清单时使用的这些功能及其他选项。】
 
+	VS新版本(VS2015)项目后缀：参考：https://msdn.microsoft.com/zh-cn/library/ee862524.aspx
+	.vcproj 现在为 .vcxproj Visual Studio 会自动将在 Visual C++ 早期版本中创建的项目文件转换为当前系统所用的格式。有关如何手动升级项目的更多信息，请参见 /Upgrade (devenv.exe)。
+	.vsprops 现在为 .props 在早期版本中，项目属性表是具有 .vsprops 文件扩展名的、基于 XML 的文件。使用项目属性表可以为生成工具（如编译器或链接器）指定开关并创建用户定义的宏。
+在当前2015版本中，项目属性表的文件扩展名为 .props。
+	.vcxproj.user 文件
+	用户文件 (.vcxproj.user) 存储特定于用户的属性，例如调试和部署设置。vcxproj.user 文件应用于特定用户的所有项目。
 	
 4，QT pro文件详解
 	参考http://doc.qt.io/qt-4.8/qmake-variable-reference.html
 
-	
-	
+	示例：
+	message($$_PRO_FILE_) ##http://doc.qt.io/qt-5/qmake-variable-reference.html
+
+	QT_VERSION = 4.7.1	##指定QT版本
+
+	QT -= gui ## Only the core module is used.By default, QT contains both core and gui
+
+	TEMPLATE = app
+	TARGET = hellokiwi
+	CONFIG += console
+	DEFINES += 
+
+	RCC_DIR = ./tmp		## RCC文件存放目录
+	MOC_DIR = ./tmp		## MOC文件存放目录
+	OBJECTS_DIR = ./tmp ## 临时OBJ文件存放目录	 - 生成VS项目文件时，也会将此目录配置为中间文件存放目录
+
+	QMAKE_CLEAN += ./tmp ## clean时清除的目录
+
+	DESTDIR = ../bin
+	DLLDESTDIR = ../bin
+	INCLUDEPATH = ./ ./tmp	## 临时目录里有对应的头文件，因此要包含
+	win32:INCLUDEPATH += ./
+	win32:LIBS += 
+
+	RESOURCES +=
+
+	OBJECTS += ## Specify the extension of each source file is replaced by .o (Unix) or .obj (Win32). You can add objects to the list.
+	SOURCES += main.cpp
+
+	##总体思路是，由pro管理Linux和Windows下的两个版本。Linux下直接使用pro文件，Windows下通过qmake将pro文件转换为VS的项目文件，并使用VS进行开发（转换过程实现配置的转换，以便转换后不需再配置VS）。
 	
 	
 	
