@@ -192,12 +192,9 @@ Kiwi一步一步构建过程：
 
 	##总体思路是，由pro管理Linux和Windows下的两个版本。Linux下直接使用pro文件，Windows下通过qmake将pro文件转换为VS的项目文件，并使用VS进行开发（转换过程实现配置的转换，以便转换后不需再配置VS）。
 	
-	
-	
-	
-	
-	
-	
+5，可重入与线程安全：
+	可重入的（Reentrant）：如果多个线程可以在同一时刻调用一个类的所有函数，并且保证每一次函数调用都引用一个唯一的数据，就称这个类是可重入的（Reentrant means that all the functions in the referenced class can be called simultaneously by multiple threads, provided that each invocation of the functions reference unique data.）。大多数C++类都是可重入的。类似的，一个函数被称为可重入的，如果该函数允许多个线程在同一时刻调用，而每一次的调用都只能使用其独有的数据。全局变量就不是函数独有的数据，而是共享的。换句话说，这意味着类或者函数的使用者必须使用某种额外的机制（比如锁）来控制对对象的实例或共享数据的序列化访问。
+	线程安全（Thread-safe）：如果多个线程可以在同一时刻调用一个类的所有函数，即使每一次函数调用都引用一个共享的数据，就说这个类是线程安全的（Threadsafe means that all the functions in the referenced class can be called simultaneously by multiple threads even when each invocation references shared data.）。如果多个线程可以在同一时刻访问函数的共享数据，就称这个函数是线程安全的。	
 	
 	
 	

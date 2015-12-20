@@ -14,6 +14,18 @@ MOC_DIR = ./tmp
 OBJECTS_DIR = ./tmp
 
 QMAKE_CLEAN += ./tmp
+QMAKE_CLEAN += ./debug
+QMAKE_CLEAN += ./release
+QMAKE_CLEAN += ./hellokiwi.pro
+QMAKE_CLEAN += ./hellokiwi.suo
+QMAKE_CLEAN += ./hellokiwi.vcproj
+QMAKE_CLEAN += ./hellokiwi.vcproj.*
+QMAKE_CLEAN += ./hellokiwi.ncb
+QMAKE_CLEAN += ./hellokiwi.pdb
+QMAKE_CLEAN += ./hellokiwi.idb
+
+#source code
+CODECFORSRC = UTF-8
 
 DESTDIR = ../bin
 DLLDESTDIR = ../bin

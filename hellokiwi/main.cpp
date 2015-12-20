@@ -1,5 +1,6 @@
 
 #include <QtCore/QCoreApplication>
+#include <QtGui/QApplication>
 
 //#include "mainwindow.h"
 
@@ -141,20 +142,30 @@ void initialiseConsole(){
 //
 //
 //
-int main(int argc, char *argv[])
+#include <iostream>
+using namespace std;
+int main(int argc, char **argv)
 {
 
     //qInstallMsgHandler(messageHandler);
 
-    QCoreApplication a(argc, argv);
+    QCoreApplication app(argc, argv);
 
-    console = new consoleT();
-    initialiseConsole();
+	app.setApplicationName("kiwi");
+	app.setApplicationVersion("v0.01");
+	
+	cout << "kiwi:) ";
+
+	string cmd;
+	cin >> cmd;
+	
+    //console = new consoleT();
+    //initialiseConsole();
 
     //qDebug() << "Hello World!";
 
     //MainWindow w;
     //w.show();
 
-    return a.exec();
+    return app.exec();
 }
