@@ -142,6 +142,7 @@ Kiwi一步一步构建过程：
 	cl.exe：VS的编译工具，无论是使用IDE，还是命令行MSBuild，最终编译*.cpp文件的还是cl.exe【将.c，.cpp，.cxx编译成obj文件】
 	link.exe：VS的链接工具，同上，无论是使用IDE，还是命令行MSBuild，最终都是调用link.exe来链接.obj和.lib等文件来生成目标。【将obj、lib、res链接成dll或exe等可执行文件】
 	nmake.exe：Windows下的make工具，解析makefile来自动编译构建项目。仍旧需要使用cl.exe编译器（或其它编译器）和link.exe链接器(或其它链接器)。【执行makefile构建dll或exe等目标】
+	CMake是一个跨平台的安装(编译)工具,可以用简单的语句来描述所有平台的安装(编译过程)。他能够输出各种各样的makefile或者project文件,能测试编译器所支持的C++特性,类似UNIX下的automake。
 	ml.exe：汇编的编译工具，MASM编译工具。64位为ml64.exe。masm and link。【将.asm编译生成.obj文件，貌似可以直接生成exe可执行文件】
 		
 	rc.exe：Windows资源编译器工具，将例如游标、图标、位图、对话框和字体的资源编译为一个资源 (.res) 文件。【将.rc资源文本转变成.res二进制文件】
@@ -192,9 +193,52 @@ Kiwi一步一步构建过程：
 
 	##总体思路是，由pro管理Linux和Windows下的两个版本。Linux下直接使用pro文件，Windows下通过qmake将pro文件转换为VS的项目文件，并使用VS进行开发（转换过程实现配置的转换，以便转换后不需再配置VS）。
 	
-5，可重入与线程安全：
+5，可重入与线程安全与类型安全：
 	可重入的（Reentrant）：如果多个线程可以在同一时刻调用一个类的所有函数，并且保证每一次函数调用都引用一个唯一的数据，就称这个类是可重入的（Reentrant means that all the functions in the referenced class can be called simultaneously by multiple threads, provided that each invocation of the functions reference unique data.）。大多数C++类都是可重入的。类似的，一个函数被称为可重入的，如果该函数允许多个线程在同一时刻调用，而每一次的调用都只能使用其独有的数据。全局变量就不是函数独有的数据，而是共享的。换句话说，这意味着类或者函数的使用者必须使用某种额外的机制（比如锁）来控制对对象的实例或共享数据的序列化访问。
+	
 	线程安全（Thread-safe）：如果多个线程可以在同一时刻调用一个类的所有函数，即使每一次函数调用都引用一个共享的数据，就说这个类是线程安全的（Threadsafe means that all the functions in the referenced class can be called simultaneously by multiple threads even when each invocation references shared data.）。如果多个线程可以在同一时刻访问函数的共享数据，就称这个函数是线程安全的。	
 	
+	类型安全（Type-safe）：
+	类型安全是指我们使用一个类的指针在调用类的函数或传递类的对象时，该指针“确实”是指向我们所规定的类的对象。也可以说是指针的指向 类型的转换 精度的丢失 异常的保护等。也可以这样理解：类型安全的模块，如果传递了非识别的类型，将能使编译器编译错误，让人知道类型错误。
+	例如：
+	class A;
+	A *p=new A;
+	p->func();   //类型不安全，我们不能保证指针p 
+				//“确实”指向类A的一个对象，因为前面的new可能不成功。
+	或者
+	Pointer A = new B();	//如果类型安全，这个语句将会导致编译错误。因为B指针不能赋予A指针。
+	像C的union，结构体等可以任意赋值，这就是类型不安全。
 	
+
+
+7，本来打算使用QT的QCoreApplication来做一个命令行终端，但是QT的QCoreApplication并不支持键盘事件，因此即使监听它的事件，也无法获取键盘按键信息。
+	所以，放弃了使用QT的终端程序，而使用了getch()方式实现，头文件为conio.h。
+	conio.h是Windows终端的头文件，在Linux下也有一个对应的兼容性版本，理论上可以跨平台。
 	
+	但是，conio.h虽然可以捕获键盘事件，但是在下一行删除到尽头的时候，退格不会自动跳到上一行而导致修改输入变得不可控。
+	
+	为什么需要conio.h呢？因为需要在command-line模式下监听键盘事件，以便在Tab的时候实现自动补全。
+	其实，这里完全可以自己实现一个命令行窗口，窗口的标题、样式、布局都是自己实现的，这样命令行的输入监控就变成了对一个控件的监控。这种自己实现命令行窗口的做法，可以轻易实现在用户输入的时候监控键盘行为。只是，这样的程序是以窗口形式存在的，鼠标右键菜单等都需要自己实现，其次最根本的是它以GUI形式存在，如果在Linux的文本模式下将无法运行。
+	
+	然而，开发这个工具的出发点是，它以文本模式存在，能够在Windows命令行或者Linux的shell下生存并临时接管它们的一些键盘事件（这样说来，可以使用hook，像Windows下hook到命令行窗口的事件）。
+
+	http://www.codeproject.com/Articles/2357/Console-Event-Handling
+	
+8，	
+	http://www.codeproject.com/Articles/6614/Generic-Observer-Pattern-and-Events-in-C
+	//所有的mt_policy其实是库定义的三种锁策略而已[单线程无锁、多线程共享全局锁、多线程局部锁]
+
+TODO sigslot.h与QT的整合：sigslot.h要先于QT库引入，否则会编译失败。
+TODO QObject基类在多重继承时的位置：放在首位，因为moc.exe是根据首位对象来生成成员metaObject，否则编译失败。
+TODO VS2008没有自动执行moc.exe的问题，要讲moc_XXX.cpp加入到源文件才能通过编译。http://vperi.com/2012/04/23/automatic-mocing-in-visual-studio/
+
+9，命令行的历史记录实现：
+	历史记录需要：上一条、下一条、当前位置、历史记录位置
+	   1 2 3 4 5 
+	   * 
+		 * * * *   len = 5;
+	   |           index = 0 last = 4 next = 1
+		 |         index = 1 last = 0 next = 2
+		   |
+			 |
+			   |   index = 4 last = 3 next = 0
