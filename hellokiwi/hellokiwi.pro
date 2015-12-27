@@ -37,3 +37,10 @@ RESOURCES +=
 
 OBJECTS += ## Specify the extension of each source file is replaced by .o (Unix) or .obj (Win32). You can add objects to the list.
 SOURCES += main.cpp
+
+SOURCES += kiwi.cpp
+HEADERS += kiwi.h
+
+SOURCES += cconsole.cpp
+HEADERS += cconsole.h
+HEADERS += sigslot.h
