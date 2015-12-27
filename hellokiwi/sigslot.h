@@ -2,10 +2,6 @@
 // 
 // Written by Sarah Thompson (sarah@telergy.com) 2002.
 //
-// If compile error change Line419 to 
-//		typedef typename sender_set::const_iterator const_iterator;
-//         If include QT headers that compile error too, preproccess sigslot.h before QT libs !	- JokinKuang 2015
-//
 // License: Public domain. You are free to use this code however you like, with the proviso that
 //          the author takes on no responsibility or liability for any use.
 //

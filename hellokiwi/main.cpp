@@ -165,13 +165,40 @@
 //	return true;
 //}
 
-#include <conio.h>
-#include <stdio.h>
+#include "kiwi.h"
+#include "sigslot.h"
 #include "cconsole.h"
+
+class CConsole1
+{
+public:
+	sigslot::signal2<char *, int> sig;
+};
+
+class Kiwi1 : public sigslot::has_slots<>
+{
+public:
+	void on_sig(char * , int);
+};
+
+void Kiwi1::on_sig(char * a, int b)
+{
+	printf("Sig is OK");
+}
+
 int main(int argc, char **argv)
 {
 	argc;argv;
+	//CConsole ccon;
+	//Kiwi kiwi;
+	//ccon.cmdline.connect(&kiwi, &Kiwi::on_cmdline);
+	//ccon.cmdline("ok", 1);
+	//system("pause");
+	//return 0;
+
 	CConsole ccon;
+	Kiwi kiwi;
+	ccon.cmdline.connect(&kiwi, &Kiwi::on_cmdline);
 	return ccon.exec();
-}
+ }
 
