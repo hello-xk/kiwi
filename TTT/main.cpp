@@ -7,6 +7,26 @@ class tcConsoleThrd;
 class ConsoleInput;
 class tcPlayApp;
 
+class MyText : public QTextStream
+{
+public:
+	MyText(FILE *fd);
+
+protected:
+	bool event(QEvent *e);
+};
+
+MyText::MyText(FILE *fd)
+: QTextStream(fd)
+{
+
+}
+
+bool MyText::event(QEvent *e)
+{
+	return true;
+}
+
 class tcConsoleThrd : public QThread
 {
 public:
@@ -15,8 +35,10 @@ public:
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event);
+	bool event(QEvent *e);
 
-    QTextStream ts;
+    //QTextStream ts;
+	MyText ts;
 };
 
 bool tcConsoleThrd::eventFilter(QObject *obj, QEvent *event)
@@ -31,6 +53,11 @@ bool tcConsoleThrd::eventFilter(QObject *obj, QEvent *event)
     }
 }
 
+bool tcConsoleThrd::event(QEvent *e)
+{
+	return true;
+}
+
 tcConsoleThrd::tcConsoleThrd (QObject *parent) :
 ts(stdin), 
 QThread (parent)
@@ -43,7 +70,7 @@ void tcConsoleThrd::run ()
     while (1)
     {
         printf("kiwi$ ");
-        QChar ch = ts.device()->getch();
+        QString ch = ts.device()->readLine();
         /*if (temp == "quit")
         {
             QEvent *ce = new QEvent (QEvent::Quit);

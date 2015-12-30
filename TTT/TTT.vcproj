@@ -108,7 +108,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;.&quot;;&quot;C:\Qt\4.7.1\include&quot;;&quot;.\GeneratedFiles\$(ConfigurationName)&quot;;&quot;C:\Qt\4.7.1\include\QtCore&quot;"
+				AdditionalIncludeDirectories="&quot;.&quot;;&quot;D:\Qt\Qt4.7.1\include&quot;;&quot;.\GeneratedFiles\$(ConfigurationName)&quot;;&quot;D:\Qt\Qt4.7.1\include\QtCore&quot;"
 				PreprocessorDefinitions=",UNICODE,WIN32,QT_LARGEFILE_SUPPORT;QT_DLL;QT_CORE_LIB"
 				RuntimeLibrary="3"
 				TreatWChar_tAsBuiltInType="false"
@@ -125,9 +125,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="C:\Qt\4.7.1\lib\qtmaind.lib C:\Qt\4.7.1\lib\QtCored4.lib"
+				AdditionalDependencies="D:\Qt\Qt4.7.1\lib\qtmaind.lib D:\Qt\Qt4.7.1\lib\QtCored4.lib"
 				OutputFile="$(OutDir)\$(ProjectName).exe"
-				AdditionalLibraryDirectories="C:\Qt\4.7.1\lib;&quot;.\GeneratedFiles\$(ConfigurationName)&quot;;"
+				AdditionalLibraryDirectories="D:\Qt\Qt4.7.1\bin;D:\Qt\Qt4.7.1\lib;&quot;.\GeneratedFiles\$(ConfigurationName)&quot;;"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 			/>
@@ -249,8 +249,8 @@
 						<Tool
 							Name="VCCustomBuildTool"
 							Description="Moc&apos;ing main.cpp..."
-							CommandLine="&quot;C:\Qt\4.7.1\bin\moc.exe&quot;  &quot;.\main.cpp&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\$(InputName).moc&quot;  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_CORE_LIB &quot;-I.&quot; &quot;-IC:\Qt\4.7.1\include&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-IC:\Qt\4.7.1\include\QtCore&quot;&#x0D;&#x0A;"
-							AdditionalDependencies="&quot;C:\Qt\4.7.1\bin\moc.exe&quot;;.\main.cpp"
+							CommandLine="&quot;moc.exe&quot;  &quot;.\main.cpp&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\$(InputName).moc&quot;  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_CORE_LIB &quot;-I.&quot; &quot;-IC:\Qt\4.7.1\include&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-IC:\Qt\4.7.1\include\QtCore&quot;&#x0D;&#x0A;"
+							AdditionalDependencies="&quot;moc.exe&quot;;.\main.cpp"
 							Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\$(InputName).moc&quot;"
 						/>
 					</FileConfiguration>

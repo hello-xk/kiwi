@@ -222,6 +222,8 @@ Kiwi一步一步构建过程：
 	
 	然而，开发这个工具的出发点是，它以文本模式存在，能够在Windows命令行或者Linux的shell下生存并临时接管它们的一些键盘事件（这样说来，可以使用hook，像Windows下hook到命令行窗口的事件）。
 
+	还有一个跨平台做命令行的库叫Ncurses，不过在Windows下貌似需要使用mingw编译，所以没有选择Ncurses
+
 	http://www.codeproject.com/Articles/2357/Console-Event-Handling
 	
 8，	

@@ -1,0 +1,5 @@
+http://stackoverflow.com/questions/7543313/how-to-handle-keypress-events-in-a-qt-console-application
+Google £º qt console application keyboard input
+
+
+http://www.scriptscoop.net/t/98630dc753e1/howto-make-a-simple-qt-console-application-with-multithreading.html
