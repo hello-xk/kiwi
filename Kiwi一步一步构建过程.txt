@@ -256,5 +256,6 @@ http://www.cnblogs.com/tocy/p/console_intro_sample.html
 http://www.bubuko.com/infodetail-491746.html
 https://msdn.microsoft.com/en-us/library/windows/desktop/ms682073(v=vs.85).aspx
 http://stackoverflow.com/questions/2492077/output-unicode-strings-in-windows-console-app
+http://ask.webatall.com/windows/16539_c-console-keyboard-events.html
 
 	
