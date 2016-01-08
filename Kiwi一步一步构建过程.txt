@@ -251,11 +251,138 @@ TODO VS2008没有自动执行moc.exe的问题，要讲moc_XXX.cpp加入到源文
 	要通过配置文件，在打开时默认选中Release编译配置，只能将Release配置放在第一位。
 	
 11，控制台开发的相关资料
-http://www.cnblogs.com/tocy/p/Console-Introduction.html
-http://www.cnblogs.com/tocy/p/console_intro_sample.html
-http://www.bubuko.com/infodetail-491746.html
-https://msdn.microsoft.com/en-us/library/windows/desktop/ms682073(v=vs.85).aspx
-http://stackoverflow.com/questions/2492077/output-unicode-strings-in-windows-console-app
-http://ask.webatall.com/windows/16539_c-console-keyboard-events.html
+	http://www.cnblogs.com/tocy/p/Console-Introduction.html
+	http://www.cnblogs.com/tocy/p/console_intro_sample.html
+	http://www.bubuko.com/infodetail-491746.html
+	https://msdn.microsoft.com/en-us/library/windows/desktop/ms682073(v=vs.85).aspx
+	http://stackoverflow.com/questions/2492077/output-unicode-strings-in-windows-console-app
+	http://ask.webatall.com/windows/16539_c-console-keyboard-events.html
+	C++控制台操作
+	http://blog.csdn.net/stude/article/details/7645056
 
+	控制台程序
+	https://msdn.microsoft.com/en-us/library/ms682010(v=vs.85).aspx
+	
+	1，控制台程序是运行在文本模式下的程序，没有GUI，所以没有任何消息循环。
+	2，控制台程序的GUI是csrss.exe创建的，所以控制台的消息循环是到达了csrss.exe。csrss.exe将消息转换为控制台对象，然后插入到控制台STDIN队列里，所以如果想在控制台下处理键盘、鼠标等事件，则需要从STDIN里面读取序列，而不是通过Windows的消息循环（Windows的消息循环只针对GUI程序）。
+	3，Windows控制台有一系列API，其中有上层API（High-Level Input and Output）和底层API（Low-Level Input and Output）。上层API过滤了事件，队列里只有字符。底层API能够读取事件和字符。
+	4，Linux控制台和Windows控制台类似，仍旧没有事件消息，只能从STDIN里读取，只不过Linux能够从STDIN里读取到的信息相对比较多。（暂时未对Linux下的控制台进行了解）
+	5，控制台程序和GUI程序的区别：
+		1，控制台程序能在命令行里运行打开，直接在命令行里运行，并不会创建新的窗口，而GUI程序则会弹出新的窗口。像Linux，如果在文本模式终端下，只能运行文本模式的程序，而不能运行GUI程序。Windows下没有文本模式终端的概念，因此控制台程序和GUI程序的区别不明显。
+		2，就是上面的，GUI程序才有消息循环，而控制台程序并没有消息循环。HOOK控制台程序是收不到任何消息的。
+		
+	The events are posted to the active window. Console windows are owned by the console subsystem, csrss.exe, and it receives the events, then translates them to characters and puts them in the console object which is your application's stdin.
+	If you want to process events the Win32 GUI way, you should use a Win32 window (e.g. RegisterClass and CreateWindow), not a console window.
+
+	控制台的默认处理，能够显示用户的输入，能够通过Backspace来删除字符，能够通过左右键移动光标，并能对上下方向键进行历史切换，右方向键进行buffer填充。默认的控制台和我们需要的控制台的唯一缺少的就是TAB键，默认控制台需要等待回车键才进行按键解析，因此不适合做TAB自动补全。
+	本来打算使用控制台默认的ENABLE_ECHO_INPUT来默认处理输入，但是要启用这个flag必须同时启用ENABLE_LINE_INPUT，意味着如果使用这种方式实现TAB自动补全，需要按回车键确认输入。
+	然而，TAB自动补全是不需要按回车键确认输入的，而是TAB键按下即返回。
+	所以，不能使用控制台默认的ENABLE_ECHO_INPUT来自动处理用户的输入，只能通过禁用了ENABLE_ECHO_INPUT和ENABLE_LINE_INPUT的ReadConsole或ReadConsoleInput实现。只是，这样实现需要自行处理Backspace、左右光标移动、上下历史切换、右方向buffer填充这些基本功能。
+
+	另外虽然在C++中，iostream.h定义了cin和cout的标准输入和输出流对象。但它们只能实现基本的输入输出 操作，对于控制台窗口界面的控制却无能为力，而且不能与stdio.h和conio.h友好相处，因为iostream.h和它们是C++两套不同的输入输出操作方式，使用时要特别注意。
+
+12，codepage，代码页，也叫字符集。
+	说代码页的时候，比较难理解，其实它就是字符集，比如gbk、Unicode等字符集。
+	控制台程序也有自己的代码页，Windows控制台默认的代码页是936（ANSI/OEM -简体中文 GBK），可以控制台属性-选项里查看当前代码页。
+	代码页：https://msdn.microsoft.com/en-us/library/windows/desktop/dd317756(v=vs.85).aspx
+	部分代码页列表：
+	Identifier	.NET Name	Additional information
+	869	ibm869	OEM Modern Greek; Greek, Modern (DOS)
+	870	IBM870	IBM EBCDIC Multilingual/ROECE (Latin 2); IBM EBCDIC Multilingual Latin 2
+	874	windows-874	ANSI/OEM Thai (ISO 8859-11); Thai (Windows)
+	875	cp875	IBM EBCDIC Greek Modern
+	932	shift_jis	ANSI/OEM Japanese; Japanese (Shift-JIS)
+	》936	gb2312	ANSI/OEM Simplified Chinese (PRC, Singapore); Chinese Simplified (GB2312)
+	949	ks_c_5601-1987	ANSI/OEM Korean (Unified Hangul Code)
+	950	big5	ANSI/OEM Traditional Chinese (Taiwan; Hong Kong SAR, PRC); Chinese Traditional (Big5)
+	1026	IBM1026	IBM EBCDIC Turkish (Latin 5)
+	1200	utf-16	Unicode UTF-16, little endian byte order (BMP of ISO 10646); available only to managed applications
+	1201	unicodeFFFE	Unicode UTF-16, big endian byte order; available only to managed applications
+	1361	Johab	Korean (Johab)
+	12000	utf-32	Unicode UTF-32, little endian byte order; available only to managed applications
+	12001	utf-32BE	Unicode UTF-32, big endian byte order; available only to managed applications
+	51932	euc-jp	EUC Japanese
+	51936	EUC-CN	EUC Simplified Chinese; Chinese Simplified (EUC)
+	51949	euc-kr	EUC Korean
+	51950		EUC Traditional Chinese
+	52936	hz-gb-2312	HZ-GB2312 Simplified Chinese; Chinese Simplified (HZ)
+	54936	GB18030	Windows XP and later: GB18030 Simplified Chinese (4 byte); Chinese Simplified (GB18030)
+	65000	utf-7	Unicode (UTF-7)
+	》65001	utf-8	Unicode (UTF-8)
+
+13，控制台输出中文问题：
+	
+	cout和wcout与printf和wprintf最好不要混用。
+	printf和wprintf是C语言的函数，C语言的locale只有全局设置，这会导致cout和wcout不能输出中文。
+	cout和wcout是C++语言的函数，C++的locale支持以下分类设置。
+
+	1、语言符号及其分类(LC_CTYPE) 
+	2、数字(LC_NUMERIC) 
+	3、比较和排序习惯(LC_COLLATE) 
+	4、时间显示格式(LC_TIME) 
+	5、货币单位(LC_MONETARY) 
+	6、信息主要是提示信息,错误信息,状态信息,标题,标签,按钮和菜单等(LC_MESSAGES) 
+	7、姓名书写方式(LC_NAME) 
+	8、地址书写方式(LC_ADDRESS) 
+	9、电话号码书写方式(LC_TELEPHONE) 
+	10、度量衡表达方式 (LC_MEASUREMENT) 
+	11、默认纸张尺寸大小(LC_PAPER) 
+	12、对locale自身包含信息的概述(LC_IDENTIFICATION)。
+	
+	using namespace std;
+	wcout.imbue(locale("chs"));	//全局设置，Warning：这样设置后wcout << 12345会输出12,345，因为同时设置了数值的显示方式 
+        wcout.imbue(locale(locale(),"",LC_CTYPE));	//局部设置，只设置语言符号等，只影响中文语言，不影响数值等的显示方式，""（不是NULL）表示locale与本地环境所使用的编码方式相同
+	
+	控制台有设置代码页的函数：
+	SetConsoleCP(65001)		//设置输入代码页
+	SetConsoleOutputCP(65001)	//设置输出代码页（输出代码页如果设置为UTF-8，会导致终端的字体发生变化，甚至不能输入中文）
+	1，输入输出代码页都设为ANSI（默认），可以输入中文，但是无法输出中文，需要使用wcout.imbue函数。
+	2，输入输出代码页都设为UTF-8，导致无法输入中文，所以也就无法输出中文。
+	3，只将输入代码页改为UTF-8，可以输入中文，只是由于输出代码页是ANSI，因此无法使用wcout输出中文，仍旧要使用wcout.imbue函数。
+
+	使用这两个函数不能解决输出中文的问题。
+
+	ReadConsoleInput读取控制台输入的中文，得到的是中文的Unicode编码。
+	Windows内部貌似统一使用Unicode编码，而在界面展示的时候，通过转换将Unicode编码转换为ANSI编码（或其它本地化编码）以达到不同国家显示的界面语言不同（个人猜测）。
+	所以设置了wcout.imbue的时候，wcout就会对标准的Unicode转换为对应的字符编码集显示。
+	
+	Windows下可以使用以下两个API进行编码转换，实现Unicode（UCS2），UTF8，GBK（GB2312）互转。
+	Warning：如果第五个参数为0，函数返回目标缓冲区所必须的字符数；否则，函数转换成功转换的字符数，函数失败时，返回0。所以第一次是获取缓冲区空间。
+	
+	//Unicode转为ANSI或UTF8
+	nCodePage = CP_UTF8 or CP_ACP; //即上面的65001或936的宏。如果是CP_UTF8则表示UTF8与Unicode互转。如果是CP_ACP则表示ANSI与Unicode互转。
+	nCount = WideCharToMultiByte(nCodePage, 0, wStr, -1, NULL, 0, NULL, NULL);  //the4th为-1，根据0结束符自动判断lpMultiByteStr指定的字符串的长度，否则要手动指定字符串的长度！！
+	pStr = new char[nCount];  
+	nCount = WideCharToMultiByte(nCodePage, 0, wStr, -1, pStr, nCount, NULL, NULL);  
+
+	//ANSI或UTF8转为Unicode
+	memset(wStr, 0, sizeof(wStr));  
+	nWCount = MultiByteToWideChar(nCodePage, 0, pStr, nCount, wStr, 0);  
+	nWCount = MultiByteToWideChar(nCodePage, 0, pStr, nCount, wStr, nWCount);  
+	
+	例子，使用API将控制台输入的Unicode转换为控制台的ANSI以便输出：
+	WCHAR wStr = (WCHAR)ir.Event.KeyEvent.uChar.UnicodeChar;
+        int nCount = WideCharToMultiByte(CP_ACP, 0, &wStr, 1, NULL, 0, NULL, NULL); 
+        char *pStr = new char[nCount+1];  
+        nCount = WideCharToMultiByte(CP_ACP, 0, &wStr, 1, pStr, nCount, NULL, NULL); 
+        pStr[nCount] = '\0';
+        std::cout << pStr << std::flush;
+
+	总结：
+	通过wcout.imbue或WideCharToMultiByte可以实现终端输入中文并打印出来。
+
+14，按键虚拟键值（VirtualKeyCode）与虚拟扫描码（VirtualScanCode）与控制键状态（ControlKeyState）
+	键盘上每一个有意义的键都对应着一个唯一的扫描码，虽然扫描码可以作为键的标识，但它依赖于具体设备的。
+	因此，在应用程序中，使用的往往是与具体设备无关的虚拟键值。这种虚拟键值是与设备无关的键盘编码。
+	在Visual C++中，最常用的虚拟键代码已被定义在Winuser.h中，例如：VK_SHIFT表示SHIFT键，VK_F1表示功能键F1等。
+	ControlKeyState用来表示控制键状态，它可以是
+		CAPSLOCK_ON(CAPS LOCK灯亮)、
+		ENHANCED_KEY(按下扩展键)、
+		LEFT_ALT_PRESSED(按下左ALT键)、 
+		LEFT_CTRL_PRESSED(按下左CTRL键)、
+		NUMLOCK_ON (NUM LOCK灯亮)、
+		RIGHT_ALT_PRESSED(按下右ALT键)、
+		RIGHT_CTRL_PRESSED(按下右CTRL键)、 
+		SCROLLLOCK_ON(SCROLL LOCK灯亮)和
+		SHIFT_PRESSED(按下SHIFT键)中的一个或多个值的组合。
 	
