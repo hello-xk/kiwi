@@ -1,0 +1,68 @@
+C与C++的动态库与静态库：
+
+-------------------------------------------------
+1，C的静态库生成：
+	1，创建一个静态库项目，比如GNU的readline
+	2，创建一个头文件作为导出库头文件，比如readline.h
+	3，创建一系列导出函数、导出变量等，然后在头文件里进行声明，
+		比如在readline.h里面声明：extern rl_compentry_func_t *rl_completion_entry_function;
+								  extern int rl_getc PARAMS((FILE *));
+	4，编译生成即能生成一个C静态库。
+
+2，C的静态库使用：
+	1，创建一个项目（任意项目）
+	2，引入上面生成的静态库（*.lib），比如readline_x86.lib
+	3，引入上面的头文件，比如readline.h
+	4，直接访问readline.h里面的函数或变量即可。
+
+3，C++使用C的静态库：
+	上面生成的静态库并不能直接在C++的项目里使用！需要做一些处理：
+	1，在头文件里添加 extern "C" { }，使得C代码可以在C++下使用。readline.h里面已经添加了C++的支持。
+	2，使用C++编译器重新编译静态库。（可以理解为将同样的C代码生成C++模块）
+	3，生成的静态库可以在C++项目中使用了。
+
+---------------------------------------------------
+4，C的动态库生成：
+	1，定义下面的导出导入关键字：
+		#undef KIWI_API
+		#if defined(KIWI_DLL_BUILD)
+		#   define KIWI_API            __declspec(dllexport)	//导出
+		#else
+		#   define KIWI_API            __declspec(dllimport)	//导入
+		#endif
+	2，在编译动态库时，定义#define KIWI_DLL_BUILD
+		而需要使用动态库时，则#undef KIWI_DLL_BUILD
+	3，创建一系列导出函数：
+		void KIWI_API call_readline(
+			const wchar_t* prompt,
+			wchar_t* result,
+			unsigned size
+		)
+		{
+		}
+	4，编译即可生成动态库*.dll
+
+5，C的动态库的使用：
+	和普通的动态库一样，引入头文件和dll，然后直接使用导出函数即可。
+
+
+6，C++导出类
+	头文件：
+	#undef KIWI_API
+		#if defined(KIWI_DLL_BUILD)
+		#   define KIWI_API            __declspec(dllexport)	//导出
+		#else
+		#   define KIWI_API            __declspec(dllimport)	//导入
+	#endif
+	
+	class KIWI_API KISocket
+	{
+	}
+	导入时，使用同样的头文件，只是要定义#define KIWI_DLL_BUILD
+	使用时，使用同样的头文件，只是取消KIWI_DLL_BUILD的宏定义即变为导入。
+
+
+
+
+
+
